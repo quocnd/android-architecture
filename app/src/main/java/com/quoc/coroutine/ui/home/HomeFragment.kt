@@ -40,13 +40,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
 
     override fun bindViewEvents() {
         binding.swipeLayout.setOnRefreshListener {
-            viewModel.getImagesFlow()
+            viewModel.getImages()
         }
 
     }
 
     override fun bindViewModel() {
-        viewModel.imagesFlow bindTo ::displayImages
+        viewModel.images bindTo ::displayImages
         viewModel.error bindTo ::toast
         viewModel.isLoading bindTo ::loading
     }
@@ -60,11 +60,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     override fun initData() {
-        viewModel.getImagesFlow()
+        viewModel.getImages()
     }
 
     override fun onLoadMore(page: Int, total: Int) {
-        viewModel.getImagesFlow()
+        viewModel.getImages()
     }
 
 }

@@ -15,7 +15,7 @@ class GetImagesUseCase @Inject constructor(
 
     override suspend fun execute(parameters: Any): Flow<Result<List<ImageEntity>>> {
         return repository
-            .getImagesFlow()
+            .getImages()
     }
 
 

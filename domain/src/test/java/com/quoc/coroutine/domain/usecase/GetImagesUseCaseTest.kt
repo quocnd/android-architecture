@@ -8,7 +8,7 @@ import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,25 +18,24 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class GetImageDetailUseCaseTest: BaseUseCaseTest() {
+class GetImagesUseCaseTest: BaseUseCaseTest() {
     @Mock
     lateinit var repository: ImageRepository
-    private lateinit var useCase: GetImageDetailUseCase
+    private lateinit var useCase: GetImagesUseCase
 
     @Before
     fun setUp() {
-        useCase = GetImageDetailUseCase(repository, dispatcher)
+        useCase = GetImagesUseCase(repository, dispatcher)
     }
 
     @Test
-    fun getImageDetail() = runBlocking {
-        val id = "1"
-        val imageEntity = TestUtils.getImage(id)
+    fun getImageImages() = runBlockingTest {
+        val images = TestUtils.getImages(3)
         val flow = flow {
-            emit(Result.Success(imageEntity))
+            emit(Result.Success(images))
         }
-        Mockito.`when`(repository.getImageDetail(id)).thenReturn(flow)
-        val result = useCase.invoke(id).first()
-        assertEquals(imageEntity, result.data)
+        Mockito.`when`(repository.getImages()).thenReturn(flow)
+        val result = useCase.invoke(Any()).first()
+        assertEquals(images, result.data)
     }
 }

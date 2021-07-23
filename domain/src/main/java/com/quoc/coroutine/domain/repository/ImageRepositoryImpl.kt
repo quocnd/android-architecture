@@ -20,7 +20,7 @@ class ImageRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : ImageRepository {
 
-    override suspend fun getImagesFlow(): Flow<Result<List<ImageEntity>>> {
+    override suspend fun getImages(): Flow<Result<List<ImageEntity>>> {
         var page = dataStore.nextPage
             .catch { emit(NetworkConst.PAGING_STARTING_INDEX) }
             .first()

@@ -1,4 +1,4 @@
-rootProject.name = "Coroutine Template"
+rootProject.name = "android-architecture"
 include ':app'
 include ':domain'
 include ':data'

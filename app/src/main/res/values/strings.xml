@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Coroutine Template</string>
+    <string name="app_name">Android Architecture</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="unauthorized_title">Token expired</string>

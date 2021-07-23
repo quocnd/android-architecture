@@ -14,9 +14,9 @@
         <action
             android:id="@+id/detail"
             app:destination="@id/detailFragment"
-            app:enterAnim="@anim/slide_in_left"
+            app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="true" />
 

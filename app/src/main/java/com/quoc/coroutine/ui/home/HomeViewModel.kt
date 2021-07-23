@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,17 +18,18 @@ class HomeViewModel @Inject constructor(
     private val getImagesUseCase: GetImagesUseCase
 ) : BaseViewModel() {
 
-    private val _imagesFlow = MutableStateFlow<List<ImageEntity>>(emptyList())
-    val imagesFlow: StateFlow<List<ImageEntity>> = _imagesFlow
+    private val _images = MutableStateFlow<List<ImageEntity>>(emptyList())
+    val images: StateFlow<List<ImageEntity>> = _images
 
-    fun getImagesFlow() {
-        showLoading()
+    fun getImages() {
         viewModelScope.launch {
             getImagesUseCase.invoke(Any())
+                .onStart { showLoading() }
                 .collect {
+                    hideLoading()
                     when (it) {
                         is Result.Success -> {
-                            _imagesFlow.value = it.data
+                            _images.value = it.data
                         }
                         is Result.Error -> {
                             handleError(it.exception)
@@ -36,7 +38,6 @@ class HomeViewModel @Inject constructor(
                         }
                     }
                 }
-            hideLoading()
         }
     }
 }
