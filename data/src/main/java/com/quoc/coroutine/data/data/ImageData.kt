@@ -19,6 +19,4 @@ data class ImageData(
     val url: String? = null,
     @Json(name = "download_url")
     val downloadUrl: String? = null
-) {
-    fun getThumbnailUrl(baseUrl: String) = "$baseUrl/id/$id/100/100.jpg"
-}
+)

@@ -3,6 +3,8 @@ package com.quoc.coroutine.di
 import com.quoc.coroutine.BuildConfig
 import com.quoc.coroutine.data.api.ApiService
 import com.quoc.coroutine.data.api.interceptor.BaseInterceptor
+import com.quoc.coroutine.di.annotation.BaseInterceptorType
+import com.quoc.coroutine.di.annotation.LoggingInterceptorType
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -42,9 +44,9 @@ object NetworkModule {
         @BaseInterceptorType baseInterceptor: Interceptor
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
-//        if (BuildConfig.DEBUG) {
-        builder.addInterceptor(httpLoggingInterceptor)
-//        }
+        if (BuildConfig.DEBUG) {
+            builder.addInterceptor(httpLoggingInterceptor)
+        }
         builder.addInterceptor(baseInterceptor)
         return builder.build()
     }

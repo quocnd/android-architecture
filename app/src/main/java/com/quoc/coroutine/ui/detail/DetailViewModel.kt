@@ -3,6 +3,7 @@ package com.quoc.coroutine.ui.detail
 import androidx.lifecycle.viewModelScope
 import com.quoc.coroutine.base.BaseViewModel
 import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.lib.Result
 import com.quoc.coroutine.domain.usecase.GetImageDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,14 +22,20 @@ class DetailViewModel @Inject constructor(
     val imageDetail: StateFlow<ImageEntity>
         get() = _imageDetail
 
-    fun getDetail(id: String){
+    fun getDetail(id: String) {
         viewModelScope.launch {
-            getImageDetailUseCase.execute(id)
-                .catch {
-                    handleError(it)
-                }
+            getImageDetailUseCase.invoke(id)
                 .collect {
-                    _imageDetail.value = it
+                    when (it) {
+                        is Result.Success -> {
+                            _imageDetail.value = it.data
+                        }
+                        is Result.Error -> {
+                            handleError(it.exception)
+                        }
+                        else -> {
+                        }
+                    }
                 }
         }
 
