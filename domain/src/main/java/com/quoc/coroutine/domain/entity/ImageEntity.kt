@@ -13,6 +13,8 @@ data class ImageEntity(
     companion object {
         fun createEmpty() = ImageEntity("", "", -1, -1, "", "")
     }
+
+    fun getThumbnailUrl(baseUrl: String) = "$baseUrl/id/$id/100/100.jpg"
 }
 
 fun ImageData.toEntity(): ImageEntity {

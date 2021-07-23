@@ -1,13 +1,12 @@
 package com.quoc.coroutine.domain.repository
 
-import androidx.paging.PagingData
-import com.quoc.coroutine.data.data.ImageData
 import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.lib.Result
 import kotlinx.coroutines.flow.Flow
 
-interface ImageRepository: BaseRepository {
+interface ImageRepository : BaseRepository {
 
-    suspend fun getImages(): Flow<PagingData<ImageData>>
+    suspend fun getImagesFlow(): Flow<Result<List<ImageEntity>>>
 
-    suspend fun getImageDetail(id: String): Flow<ImageEntity>
+    suspend fun getImageDetail(id: String): Flow<Result<ImageEntity>>
 }

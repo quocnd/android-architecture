@@ -1,15 +1,14 @@
 package com.quoc.coroutine.ui.home
 
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.quoc.coroutine.base.BaseViewModel
-import com.quoc.coroutine.data.data.ImageData
 import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.lib.Result
 import com.quoc.coroutine.domain.usecase.GetImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,22 +17,26 @@ class HomeViewModel @Inject constructor(
     private val getImagesUseCase: GetImagesUseCase
 ) : BaseViewModel() {
 
-    private val _images = MutableStateFlow<PagingData<ImageData>>(PagingData.empty())
-    val images: StateFlow<PagingData<ImageData>> = _images
+    private val _imagesFlow = MutableStateFlow<List<ImageEntity>>(emptyList())
+    val imagesFlow: StateFlow<List<ImageEntity>> = _imagesFlow
 
-    fun getImagesPaging(){
+    fun getImagesFlow() {
         showLoading()
         viewModelScope.launch {
-            getImagesUseCase.execute()
-                .catch {
-                    handleError(it)
-                }
-                .cachedIn(viewModelScope)
-                .collect{
-                    _images.value = it
+            getImagesUseCase.invoke(Any())
+                .collect {
+                    when (it) {
+                        is Result.Success -> {
+                            _imagesFlow.value = it.data
+                        }
+                        is Result.Error -> {
+                            handleError(it.exception)
+                        }
+                        else -> {
+                        }
+                    }
                 }
             hideLoading()
         }
-
     }
 }

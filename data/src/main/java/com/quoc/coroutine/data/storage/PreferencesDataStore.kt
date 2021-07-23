@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class PreferencesDataStore @Inject constructor(
             preferences[PREF_NEXT_PAGE] ?: 1
         }
 
-    suspend fun setCounter(nextPage: Int) {
+    suspend fun setPage(nextPage: Int) {
         context.dataStore.edit { settings ->
             settings[PREF_NEXT_PAGE] = nextPage
         }

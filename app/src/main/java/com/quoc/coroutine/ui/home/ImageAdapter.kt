@@ -3,25 +3,24 @@ package com.quoc.coroutine.ui.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.webkit.URLUtil
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.quoc.coroutine.BuildConfig
-import com.quoc.coroutine.data.data.ImageData
 import com.quoc.coroutine.databinding.ItemImageBinding
 import com.quoc.coroutine.di.GlideRequests
+import com.quoc.coroutine.domain.entity.ImageEntity
 
 class ImageAdapter(
     private val glide: GlideRequests,
-    private val action: (ImageData) -> Unit
-) : PagingDataAdapter<ImageData, ImageAdapter.ImageViewHolder>(
-    object : DiffUtil.ItemCallback<ImageData>() {
-        override fun areItemsTheSame(oldItem: ImageData, newItem: ImageData): Boolean {
+    private val action: (ImageEntity) -> Unit
+) : ListAdapter<ImageEntity, ImageAdapter.ImageViewHolder>(
+    object : DiffUtil.ItemCallback<ImageEntity>() {
+        override fun areItemsTheSame(oldItem: ImageEntity, newItem: ImageEntity): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ImageData, newItem: ImageData): Boolean {
+        override fun areContentsTheSame(oldItem: ImageEntity, newItem: ImageEntity): Boolean {
             return oldItem.author == newItem.author
                     && oldItem.downloadUrl == newItem.downloadUrl
         }
@@ -44,7 +43,7 @@ class ImageAdapter(
     class ImageViewHolder(private val binding: ItemImageBinding, val glide: GlideRequests) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ImageData) {
+        fun bind(item: ImageEntity) {
             val url = item.getThumbnailUrl(BuildConfig.BASE_URL)
             if (URLUtil.isNetworkUrl(url)) {
                 glide.load(url)

@@ -1,4 +1,4 @@
-package com.quoc.coroutine.di
+package com.quoc.coroutine.di.annotation
 
 import javax.inject.Qualifier
 
