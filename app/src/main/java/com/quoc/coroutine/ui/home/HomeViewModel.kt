@@ -6,10 +6,7 @@ import com.quoc.coroutine.domain.entity.ImageEntity
 import com.quoc.coroutine.domain.lib.Result
 import com.quoc.coroutine.domain.usecase.GetImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,8 +22,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getImagesUseCase.invoke(Any())
                 .onStart { showLoading() }
+                .onCompletion { hideLoading() }
                 .collect {
-                    hideLoading()
                     when (it) {
                         is Result.Success -> {
                             _images.value = it.data
@@ -38,6 +35,7 @@ class HomeViewModel @Inject constructor(
                         }
                     }
                 }
+
         }
     }
 }
