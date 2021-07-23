@@ -10,10 +10,13 @@ import com.quoc.coroutine.base.BaseFragment
 import com.quoc.coroutine.databinding.FragmentDetailBinding
 import com.quoc.coroutine.domain.entity.ImageEntity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>() {
 
+    @Inject
+    lateinit var baseUrl: String
     private val params: DetailFragmentArgs by navArgs()
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding
@@ -39,7 +42,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
     private fun displayImageDetail(imageEntity: ImageEntity) {
         if (URLUtil.isNetworkUrl(imageEntity.downloadUrl)) {
             Glide.with(requireContext())
-                .load(imageEntity.downloadUrl)
+
+                .load(imageEntity.getThumbnailUrl(baseUrl))
                 .into(binding.ivImage)
         }
         binding.tvAuthor.text = imageEntity.author

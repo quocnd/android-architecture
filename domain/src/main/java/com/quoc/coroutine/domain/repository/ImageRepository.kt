@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ImageRepository : BaseRepository {
 
-    suspend fun getImagesFlow(): Flow<Result<List<ImageEntity>>>
+    suspend fun getImages(): Flow<Result<List<ImageEntity>>>
 
     suspend fun getImageDetail(id: String): Flow<Result<ImageEntity>>
 }

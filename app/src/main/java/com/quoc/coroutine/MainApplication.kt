@@ -1,6 +1,7 @@
 package com.quoc.coroutine
 
 import android.app.Application
+import androidx.viewbinding.BuildConfig
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -10,10 +11,9 @@ class MainApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        BuildConfig.DEBUG
-//        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-//        }
+        }
     }
 
 }
