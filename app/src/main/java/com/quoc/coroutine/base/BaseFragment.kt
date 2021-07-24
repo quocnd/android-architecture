@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.quoc.coroutine.R
+import com.quoc.coroutine.extension.hideSoftKeyboard
 import com.quoc.coroutine.ui.dialog.DialogManager
 import com.quoc.coroutine.util.autoCleared
 import kotlinx.coroutines.flow.Flow
@@ -42,12 +43,15 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IBaseFragment {
             setupView()
             bindViewEvents()
             bindViewModel()
-            bindBaseEvents()
-            initData()
         }
+        bindBaseEvents()
+        initData()
     }
 
     private fun bindBaseEvents(){
+        view?.setOnClickListener {
+            hideSoftKeyboard()
+        }
         viewModel.isUnauthorized bindTo ::onUnauthorized
     }
 
