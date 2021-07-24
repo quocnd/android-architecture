@@ -2,6 +2,7 @@
     <string name="app_name">Android Architecture</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="no_internet_connection">No internet connection</string>
     <string name="unauthorized_title">Token expired</string>
     <string name="unauthorized_message">Your token is expired. Please login again.</string>
 </resources>

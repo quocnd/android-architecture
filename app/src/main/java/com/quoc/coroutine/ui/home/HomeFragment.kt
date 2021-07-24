@@ -58,7 +58,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun loading(isLoading: Boolean) {
-        if(!isLoading && binding.swipeLayout.isRefreshing){
+        if (!isLoading && binding.swipeLayout.isRefreshing) {
             binding.swipeLayout.isRefreshing = false
         }
 
