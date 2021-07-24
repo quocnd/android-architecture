@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.flow
  */
 abstract class NetworkBoundResource<RequestType, ResultType> {
 
-    suspend fun execute(): Flow<Result<ResultType>> {
+    suspend fun execute(): Flow<Resource<ResultType>> {
         return flow {
-            emit(Result.Loading)
+            emit(Resource.Loading)
             try {
                 val data = loadFromDb()
                 preFetch(data)
@@ -23,17 +23,17 @@ abstract class NetworkBoundResource<RequestType, ResultType> {
                         clearCurrentData()
                     }
                     saveCallResult(result)
-                    emit(Result.Success(loadFromDb()!!))
+                    emit(Resource.Success(loadFromDb()!!))
                 } else {
                     if (data != null) {
-                        emit(Result.Success(data))
+                        emit(Resource.Success(data))
                     } else {
-                        emit(Result.Error(Exception("There is no data")))
+                        emit(Resource.Error(Exception("There is no data")))
                     }
                 }
             } catch (exception: Exception) {
                 exception.printStackTrace()
-                emit(Result.Error(exception))
+                emit(Resource.Error(exception))
             }
         }
     }

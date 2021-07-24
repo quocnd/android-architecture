@@ -8,7 +8,7 @@ import com.quoc.coroutine.data.storage.PreferencesDataStore
 import com.quoc.coroutine.domain.entity.ImageEntity
 import com.quoc.coroutine.domain.entity.toEntity
 import com.quoc.coroutine.domain.lib.NetworkBoundResource
-import com.quoc.coroutine.domain.lib.Result
+import com.quoc.coroutine.domain.lib.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -20,7 +20,7 @@ class ImageRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : ImageRepository {
 
-    override suspend fun getImages(): Flow<Result<List<ImageEntity>>> {
+    override suspend fun getImages(): Flow<Resource<List<ImageEntity>>> {
         var page = dataStore.nextPage
             .catch { emit(NetworkConst.PAGING_STARTING_INDEX) }
             .first()
@@ -58,7 +58,7 @@ class ImageRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getImageDetail(id: String): Flow<Result<ImageEntity>> {
+    override suspend fun getImageDetail(id: String): Flow<Resource<ImageEntity>> {
 
         return object : NetworkBoundResource<ImageData, ImageEntity>() {
 

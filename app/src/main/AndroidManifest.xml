@@ -11,7 +11,7 @@
         android:name=".MainApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CoroutineTemplate"
+        android:theme="@style/Theme.AndroidArchitecture"
         android:fullBackupContent="true">
         <activity android:name=".MainActivity">
             <intent-filter>
