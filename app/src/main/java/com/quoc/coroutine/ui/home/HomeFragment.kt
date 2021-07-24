@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.quoc.coroutine.base.BaseFragment
 import com.quoc.coroutine.databinding.FragmentHomeBinding
@@ -25,16 +26,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         }
 
     private var adapter by autoCleared<ImageAdapter>()
+    private var loadingAdapter by autoCleared<LoadingAdapter>()
 
     override fun setupView() {
         val glide = GlideApp.with(this)
         adapter = ImageAdapter(glide) {
             findNavController().navigate(HomeFragmentDirections.detail(it.id))
         }
+        loadingAdapter = LoadingAdapter()
 
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = adapter
+        binding.recyclerView.adapter = ConcatAdapter(adapter, loadingAdapter)
         binding.recyclerView.addOnScrollListener(RecyclerScrollMoreListener(layoutManager, this))
     }
 
@@ -42,7 +45,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         binding.swipeLayout.setOnRefreshListener {
             viewModel.getImages()
         }
-
     }
 
     override fun bindViewModel() {
@@ -56,7 +58,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun loading(isLoading: Boolean) {
-        binding.swipeLayout.isRefreshing = isLoading
+        if(!isLoading && binding.swipeLayout.isRefreshing){
+            binding.swipeLayout.isRefreshing = false
+        }
+
+        val list = if (isLoading) listOf(isLoading) else emptyList()
+        loadingAdapter.submitList(list)
     }
 
     override fun initData() {
