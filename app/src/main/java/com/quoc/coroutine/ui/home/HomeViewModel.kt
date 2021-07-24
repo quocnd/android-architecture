@@ -3,7 +3,7 @@ package com.quoc.coroutine.ui.home
 import androidx.lifecycle.viewModelScope
 import com.quoc.coroutine.base.BaseViewModel
 import com.quoc.coroutine.domain.entity.ImageEntity
-import com.quoc.coroutine.domain.lib.Result
+import com.quoc.coroutine.domain.lib.Resource
 import com.quoc.coroutine.domain.usecase.GetImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -25,10 +25,10 @@ class HomeViewModel @Inject constructor(
                 .onCompletion { hideLoading() }
                 .collect {
                     when (it) {
-                        is Result.Success -> {
+                        is Resource.Success -> {
                             _images.value = it.data
                         }
-                        is Result.Error -> {
+                        is Resource.Error -> {
                             handleError(it.exception)
                         }
                         else -> {

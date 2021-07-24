@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * A generic class that holds a value with its loading status.
  * @param <T>
  */
-sealed class Result<out R> {
+sealed class Resource<out R> {
 
-    data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val exception: Exception) : Result<Nothing>()
-    object Loading : Result<Nothing>()
+    data class Success<out T>(val data: T) : Resource<T>()
+    data class Error(val exception: Exception) : Resource<Nothing>()
+    object Loading : Resource<Nothing>()
 
     override fun toString(): String {
         return when (this) {
@@ -22,23 +22,23 @@ sealed class Result<out R> {
 }
 
 /**
- * `true` if [Result] is of type [Success] & holds non-null [Success.data].
+ * `true` if [Resource] is of type [Success] & holds non-null [Success.data].
  */
-val Result<*>.succeeded
-    get() = this is Result.Success && data != null
+val Resource<*>.succeeded
+    get() = this is Resource.Success && data != null
 
-fun <T> Result<T>.successOr(fallback: T): T {
-    return (this as? Result.Success<T>)?.data ?: fallback
+fun <T> Resource<T>.successOr(fallback: T): T {
+    return (this as? Resource.Success<T>)?.data ?: fallback
 }
 
-val <T> Result<T>.data: T?
-    get() = (this as? Result.Success)?.data
+val <T> Resource<T>.data: T?
+    get() = (this as? Resource.Success)?.data
 
 /**
- * Updates value of [MutableStateFlow] if [Result] is of type [Success]
+ * Updates value of [MutableStateFlow] if [Resource] is of type [Success]
  */
-inline fun <reified T> Result<T>.updateOnSuccess(stateFlow: MutableStateFlow<T>) {
-    if (this is Result.Success) {
+inline fun <reified T> Resource<T>.updateOnSuccess(stateFlow: MutableStateFlow<T>) {
+    if (this is Resource.Success) {
         stateFlow.value = data
     }
 }

@@ -3,12 +3,11 @@ package com.quoc.coroutine.ui.detail
 import androidx.lifecycle.viewModelScope
 import com.quoc.coroutine.base.BaseViewModel
 import com.quoc.coroutine.domain.entity.ImageEntity
-import com.quoc.coroutine.domain.lib.Result
+import com.quoc.coroutine.domain.lib.Resource
 import com.quoc.coroutine.domain.usecase.GetImageDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,10 +26,10 @@ class DetailViewModel @Inject constructor(
             getImageDetailUseCase.invoke(id)
                 .collect {
                     when (it) {
-                        is Result.Success -> {
+                        is Resource.Success -> {
                             _imageDetail.value = it.data
                         }
-                        is Result.Error -> {
+                        is Resource.Error -> {
                             handleError(it.exception)
                         }
                         else -> {

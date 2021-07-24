@@ -1,10 +1,9 @@
 package com.quoc.coroutine.ui.detail
 
-import com.quoc.coroutine.domain.lib.Result
+import com.quoc.coroutine.domain.lib.Resource
 import com.quoc.coroutine.domain.repository.ImageRepository
 import com.quoc.coroutine.domain.usecase.GetImageDetailUseCase
 import com.quoc.coroutine.ui.BaseViewModelTest
-import com.quoc.coroutine.ui.detail.DetailViewModel
 import com.quoc.coroutine.util.TestUtils
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,7 +34,7 @@ class DetailViewModelTest: BaseViewModelTest() {
     fun getImageDetailTest() = runBlockingTest {
         val imageEntity = TestUtils.getImage("1")
         val result = flow {
-            emit(Result.Success(imageEntity))
+            emit(Resource.Success(imageEntity))
         }
         Mockito.`when`(getImageDetailUseCase.invoke(imageEntity.id)).thenReturn(result)
         viewModel.getDetail(imageEntity.id)

@@ -1,6 +1,6 @@
 package com.quoc.coroutine.domain.usecase
 
-import com.quoc.coroutine.domain.lib.Result
+import com.quoc.coroutine.domain.lib.Resource
 import com.quoc.coroutine.domain.lib.data
 import com.quoc.coroutine.domain.repository.ImageRepository
 import com.quoc.coroutine.domain.util.TestUtils
@@ -33,7 +33,7 @@ class GetImageDetailUseCaseTest: BaseUseCaseTest() {
         val id = "1"
         val imageEntity = TestUtils.getImage(id)
         val flow = flow {
-            emit(Result.Success(imageEntity))
+            emit(Resource.Success(imageEntity))
         }
         Mockito.`when`(repository.getImageDetail(id)).thenReturn(flow)
         val result = useCase.invoke(id).first()
