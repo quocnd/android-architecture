@@ -1,11 +1,9 @@
 package com.quoc.coroutine.base
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.quoc.coroutine.lib.IsLoading
 import com.quoc.coroutine.util.parseMessage
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

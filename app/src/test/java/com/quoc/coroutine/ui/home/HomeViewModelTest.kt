@@ -22,7 +22,7 @@ class HomeViewModelTest: BaseViewModelTest() {
 
     @Mock
     lateinit var repository: ImageRepository
-    lateinit var getImagesUseCase: GetImagesUseCase
+    private lateinit var getImagesUseCase: GetImagesUseCase
     private lateinit var viewModel: HomeViewModel
 
     @Before

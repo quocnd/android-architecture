@@ -28,5 +28,5 @@ class DispatchersModule {
 
     @Provides
     @Unconfined
-    fun provideUnconfiedDispatcher() = Dispatchers.Unconfined
+    fun provideUnconfinedDispatcher() = Dispatchers.Unconfined
 }
