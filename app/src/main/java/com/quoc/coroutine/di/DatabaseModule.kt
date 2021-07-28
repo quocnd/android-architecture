@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.quoc.coroutine.data.db.AppDatabase
 import com.quoc.coroutine.data.db.ImageDao
-import com.quoc.coroutine.data.storage.PreferencesDataStore
-import com.quoc.coroutine.data.storage.SecuredSharedPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

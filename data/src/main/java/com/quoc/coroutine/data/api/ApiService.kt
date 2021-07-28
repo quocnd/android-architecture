@@ -1,7 +1,6 @@
 package com.quoc.coroutine.data.api
 
 import com.quoc.coroutine.data.data.ImageData
-import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

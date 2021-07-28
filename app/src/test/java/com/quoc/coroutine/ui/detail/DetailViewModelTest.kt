@@ -21,7 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner
 class DetailViewModelTest: BaseViewModelTest() {
     @Mock
     lateinit var repository: ImageRepository
-    lateinit var getImageDetailUseCase: GetImageDetailUseCase
+    private lateinit var getImageDetailUseCase: GetImageDetailUseCase
     private lateinit var viewModel: DetailViewModel
 
     @Before

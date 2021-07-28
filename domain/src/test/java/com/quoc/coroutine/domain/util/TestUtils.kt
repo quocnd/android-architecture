@@ -1,6 +1,5 @@
 package com.quoc.coroutine.domain.util
 
-import android.media.Image
 import com.quoc.coroutine.domain.entity.ImageEntity
 
 object TestUtils {
