@@ -7,6 +7,7 @@ import com.quoc.coroutine.data.db.ImageDao
 import com.quoc.coroutine.data.storage.PreferencesDataStore
 import com.quoc.coroutine.domain.entity.ImageEntity
 import com.quoc.coroutine.domain.entity.toEntity
+import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.domain.lib.NetworkBoundResource
 import com.quoc.coroutine.domain.lib.Resource
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,7 @@ class ImageRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : ImageRepository {
 
-    override suspend fun getImages(): Flow<Resource<List<ImageEntity>>> {
+    override suspend fun getImages(type: LoadType): Flow<Resource<List<ImageEntity>>> {
         var page = dataStore.nextPage
             .catch { emit(NetworkConst.PAGING_STARTING_INDEX) }
             .first()
@@ -28,8 +29,16 @@ class ImageRepositoryImpl @Inject constructor(
         return object : NetworkBoundResource<List<ImageData>, List<ImageEntity>>() {
 
             override suspend fun preFetch(data: List<ImageEntity>?) {
-                if (data.isNullOrEmpty()) {
+                if (type == LoadType.REFRESH || data.isNullOrEmpty()) {
                     page = NetworkConst.PAGING_STARTING_INDEX
+                }
+            }
+
+            override suspend fun shouldFetch(data: List<ImageEntity>?): Boolean {
+                return if (type == LoadType.INITIAL) {
+                    data.isNullOrEmpty()
+                } else {
+                    true
                 }
             }
 

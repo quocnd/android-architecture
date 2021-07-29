@@ -11,11 +11,11 @@ import com.quoc.coroutine.databinding.ItemNetworkStateBinding
 class LoadingAdapter : ListAdapter<Boolean, NetworkStateViewHolder>(
     object : DiffUtil.ItemCallback<Boolean>() {
         override fun areContentsTheSame(oldItem: Boolean, newItem: Boolean): Boolean {
-            return false
+            return oldItem == newItem
         }
 
         override fun areItemsTheSame(oldItem: Boolean, newItem: Boolean): Boolean {
-            return false
+            return oldItem == newItem
         }
     }
 ) {

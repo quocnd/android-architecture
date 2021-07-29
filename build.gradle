@@ -36,6 +36,7 @@ buildscript {
         kotlin_plugin_version = "1.5.21"
         kotlin_version = "1.5.21"
 
+        legacy_support_v4_version = "1.0.0"
         lifecycle_common_version = "2.3.1"
         lifecycle_version = "2.4.0-alpha02"
 
@@ -55,6 +56,7 @@ buildscript {
         test_core_version = "1.4.0"
         timber_version = "4.7.1"
 
+        recyclerview_version = "1.2.1"
         retrofit_version = "2.9.0"
         room_version = "2.4.0-alpha04"
 

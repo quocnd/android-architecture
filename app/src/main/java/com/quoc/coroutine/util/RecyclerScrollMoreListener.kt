@@ -5,7 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-open class RecyclerScrollMoreListener(
+open class RecyclerScrollMoreListener<VH: RecyclerView.ViewHolder>(
+    private val adapter: RecyclerView.Adapter<VH>,
     private val mLayoutManager: RecyclerView.LayoutManager,
     private val loadMoreListener: OnLoadMoreListener?
 ) : RecyclerView.OnScrollListener() {
@@ -28,7 +29,7 @@ open class RecyclerScrollMoreListener(
         super.onScrolled(recyclerView, dx, dy)
         if (loadMoreListener != null) {
             var lastVisibleItemPosition = 0
-            val totalItemCount: Int = mLayoutManager.itemCount
+            val totalItemCount: Int = adapter.itemCount
             when (mLayoutManager) {
                 is StaggeredGridLayoutManager -> {
                     val lastVisibleItemPositions: IntArray =
@@ -58,7 +59,7 @@ open class RecyclerScrollMoreListener(
             val visibleThreshold = 5
             if (!loading && lastVisibleItemPosition + visibleThreshold > totalItemCount) {
                 currentPage++
-                loadMoreListener.onLoadMore(totalItemCount, totalItemCount)
+                loadMoreListener.onLoadMore(currentPage, totalItemCount)
                 loading = true
             }
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.quoc.coroutine.base.BaseViewModel
 import com.quoc.coroutine.domain.entity.ImageEntity
 import com.quoc.coroutine.domain.lib.Resource
+import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.domain.usecase.GetImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -18,9 +19,9 @@ class HomeViewModel @Inject constructor(
     private val _images = MutableStateFlow<List<ImageEntity>>(emptyList())
     val images: StateFlow<List<ImageEntity>> = _images
 
-    fun getImages() {
+    fun getImages(type: LoadType) {
         viewModelScope.launch {
-            getImagesUseCase.invoke(Any())
+            getImagesUseCase.invoke(type)
                 .onStart { showLoading() }
                 .onCompletion { hideLoading() }
                 .collect {
