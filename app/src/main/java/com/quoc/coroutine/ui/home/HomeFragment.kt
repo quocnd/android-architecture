@@ -10,6 +10,7 @@ import com.quoc.coroutine.base.BaseFragment
 import com.quoc.coroutine.databinding.FragmentHomeBinding
 import com.quoc.coroutine.di.GlideApp
 import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.util.RecyclerScrollMoreListener
 import com.quoc.coroutine.util.autoCleared
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,25 +26,34 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
             FragmentHomeBinding.inflate(inflater, parent, attachToParent)
         }
 
-    private var adapter by autoCleared<ImageAdapter>()
+    private var imageAdapter by autoCleared<ImageAdapter>()
     private var loadingAdapter by autoCleared<LoadingAdapter>()
 
     override fun setupView() {
         val glide = GlideApp.with(this)
-        adapter = ImageAdapter(glide) {
+        imageAdapter = ImageAdapter(glide) {
             findNavController().navigate(HomeFragmentDirections.detail(it.id))
         }
         loadingAdapter = LoadingAdapter()
 
-        val layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = ConcatAdapter(adapter, loadingAdapter)
-        binding.recyclerView.addOnScrollListener(RecyclerScrollMoreListener(layoutManager, this))
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+        with(binding.recyclerView) {
+            layoutManager = linearLayoutManager
+            adapter = ConcatAdapter(imageAdapter, loadingAdapter)
+            isNestedScrollingEnabled = false
+            addOnScrollListener(
+                RecyclerScrollMoreListener(
+                    imageAdapter,
+                    linearLayoutManager,
+                    this@HomeFragment
+                )
+            )
+        }
     }
 
     override fun bindViewEvents() {
         binding.swipeLayout.setOnRefreshListener {
-            viewModel.getImages()
+            viewModel.getImages(LoadType.REFRESH)
         }
     }
 
@@ -54,7 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     private fun displayImages(images: List<ImageEntity>) {
-        adapter.submitList(images)
+        imageAdapter.submitList(images)
     }
 
     private fun loading(isLoading: Boolean) {
@@ -67,11 +77,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
     }
 
     override fun initData() {
-        viewModel.getImages()
+        viewModel.getImages(LoadType.INITIAL)
     }
 
     override fun onLoadMore(page: Int, total: Int) {
-        viewModel.getImages()
+        viewModel.getImages(LoadType.APPEND)
     }
 
 }

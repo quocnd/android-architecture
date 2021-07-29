@@ -1,6 +1,7 @@
 package com.quoc.coroutine.ui.home
 
 import com.quoc.coroutine.domain.lib.Resource
+import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.domain.repository.ImageRepository
 import com.quoc.coroutine.domain.usecase.GetImagesUseCase
 import com.quoc.coroutine.ui.BaseViewModelTest
@@ -33,12 +34,13 @@ class HomeViewModelTest: BaseViewModelTest() {
 
     @Test
     fun getImagesTest() = runBlockingTest {
+        val type = LoadType.REFRESH
         val images = TestUtils.getImages(2)
         val result = flow {
             emit(Resource.Success(images))
         }
-        Mockito.`when`(getImagesUseCase.invoke(Any())).thenReturn(result)
-        viewModel.getImages()
+        Mockito.`when`(getImagesUseCase.invoke(type)).thenReturn(result)
+        viewModel.getImages(type)
         val data = viewModel.images
         assertEquals(images, data.value)
     }
