@@ -8,7 +8,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.quoc.coroutine.base.BaseFragment
 import com.quoc.coroutine.databinding.FragmentDetailBinding
-import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.model.ImageModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -39,14 +39,14 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
         viewModel.error bindTo ::toast
     }
 
-    private fun displayImageDetail(imageEntity: ImageEntity) {
-        if (URLUtil.isNetworkUrl(imageEntity.downloadUrl)) {
+    private fun displayImageDetail(imageModel: ImageModel) {
+        if (URLUtil.isNetworkUrl(imageModel.downloadUrl)) {
             Glide.with(requireContext())
 
-                .load(imageEntity.getThumbnailUrl(baseUrl))
+                .load(imageModel.getThumbnailUrl(baseUrl))
                 .into(binding.ivImage)
         }
-        binding.tvAuthor.text = imageEntity.author
+        binding.tvAuthor.text = imageModel.author
     }
 
     override fun initData() {

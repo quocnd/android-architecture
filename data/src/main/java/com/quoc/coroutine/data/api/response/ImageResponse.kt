@@ -1,12 +1,9 @@
-package com.quoc.coroutine.data.data
+package com.quoc.coroutine.data.api.response
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.quoc.coroutine.data.db.entity.ImageEntity
 import com.squareup.moshi.Json
 
-@Entity
-data class ImageData(
-    @PrimaryKey
+data class ImageResponse(
     @Json(name = "id")
     val id: String,
     @Json(name = "author")
@@ -19,4 +16,6 @@ data class ImageData(
     val url: String? = null,
     @Json(name = "download_url")
     val downloadUrl: String? = null
-)
+) {
+    fun toEntity() = ImageEntity(id, author, width, height, url, downloadUrl)
+}

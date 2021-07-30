@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.quoc.coroutine.BuildConfig
 import com.quoc.coroutine.databinding.ItemImageBinding
 import com.quoc.coroutine.di.GlideRequests
-import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.model.ImageModel
 
 class ImageAdapter(
     private val glide: GlideRequests,
-    private val action: (ImageEntity) -> Unit
-) : ListAdapter<ImageEntity, ImageAdapter.ImageViewHolder>(
-    object : DiffUtil.ItemCallback<ImageEntity>() {
-        override fun areItemsTheSame(oldItem: ImageEntity, newItem: ImageEntity): Boolean {
+    private val action: (ImageModel) -> Unit
+) : ListAdapter<ImageModel, ImageAdapter.ImageViewHolder>(
+    object : DiffUtil.ItemCallback<ImageModel>() {
+        override fun areItemsTheSame(oldItem: ImageModel, newItem: ImageModel): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ImageEntity, newItem: ImageEntity): Boolean {
+        override fun areContentsTheSame(oldItem: ImageModel, newItem: ImageModel): Boolean {
             return oldItem.author == newItem.author
                     && oldItem.downloadUrl == newItem.downloadUrl
         }
@@ -43,7 +43,7 @@ class ImageAdapter(
     class ImageViewHolder(private val binding: ItemImageBinding, val glide: GlideRequests) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ImageEntity) {
+        fun bind(item: ImageModel) {
             val url = item.getThumbnailUrl(BuildConfig.BASE_URL)
             if (URLUtil.isNetworkUrl(url)) {
                 glide.load(url)

@@ -2,14 +2,14 @@ package com.quoc.coroutine.domain.repository
 
 import com.quoc.coroutine.data.api.ApiService
 import com.quoc.coroutine.data.api.NetworkConst
-import com.quoc.coroutine.data.data.ImageData
+import com.quoc.coroutine.data.api.response.ImageResponse
 import com.quoc.coroutine.data.db.ImageDao
 import com.quoc.coroutine.data.storage.PreferencesDataStore
-import com.quoc.coroutine.domain.entity.ImageEntity
-import com.quoc.coroutine.domain.entity.toEntity
-import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.domain.lib.NetworkBoundResource
 import com.quoc.coroutine.domain.lib.Resource
+import com.quoc.coroutine.domain.model.ImageModel
+import com.quoc.coroutine.domain.model.toModel
+import com.quoc.coroutine.domain.param.LoadType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -21,20 +21,20 @@ class ImageRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : ImageRepository {
 
-    override suspend fun getImages(type: LoadType): Flow<Resource<List<ImageEntity>>> {
+    override suspend fun getImages(type: LoadType): Flow<Resource<List<ImageModel>>> {
         var page = dataStore.nextPage
             .catch { emit(NetworkConst.PAGING_STARTING_INDEX) }
             .first()
 
-        return object : NetworkBoundResource<List<ImageData>, List<ImageEntity>>() {
+        return object : NetworkBoundResource<List<ImageResponse>, List<ImageModel>>() {
 
-            override suspend fun preFetch(data: List<ImageEntity>?) {
+            override suspend fun preFetch(data: List<ImageModel>?) {
                 if (type == LoadType.REFRESH || data.isNullOrEmpty()) {
                     page = NetworkConst.PAGING_STARTING_INDEX
                 }
             }
 
-            override suspend fun shouldFetch(data: List<ImageEntity>?): Boolean {
+            override suspend fun shouldFetch(data: List<ImageModel>?): Boolean {
                 return if (type == LoadType.INITIAL) {
                     data.isNullOrEmpty()
                 } else {
@@ -42,13 +42,13 @@ class ImageRepositoryImpl @Inject constructor(
                 }
             }
 
-            override suspend fun saveCallResult(result: List<ImageData>) {
-                imageDao.insertAll(result)
+            override suspend fun saveCallResult(result: List<ImageResponse>) {
+                imageDao.insertAll(result.map { it.toEntity() })
                 dataStore.setPage(++page)
             }
 
-            override suspend fun loadFromDb(): List<ImageEntity> {
-                return imageDao.getAllImages().map { it.toEntity() }
+            override suspend fun loadFromDb(): List<ImageModel> {
+                return imageDao.getAllImages().map { it.toModel() }
             }
 
             override suspend fun shouldClearCurrentData(): Boolean {
@@ -59,7 +59,7 @@ class ImageRepositoryImpl @Inject constructor(
                 imageDao.deleteAll()
             }
 
-            override suspend fun createCall(): List<ImageData> {
+            override suspend fun createCall(): List<ImageResponse> {
                 return apiService.getNextImages(page, NetworkConst.PAGING_SIZE)
             }
 
@@ -67,24 +67,24 @@ class ImageRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getImageDetail(id: String): Flow<Resource<ImageEntity>> {
+    override suspend fun getImageDetail(id: String): Flow<Resource<ImageModel>> {
 
-        return object : NetworkBoundResource<ImageData, ImageEntity>() {
+        return object : NetworkBoundResource<ImageResponse, ImageModel>() {
 
-            override suspend fun shouldFetch(data: ImageEntity?): Boolean {
+            override suspend fun shouldFetch(data: ImageModel?): Boolean {
                 return data == null
             }
 
-            override suspend fun loadFromDb(): ImageEntity {
-                return imageDao.getImage(id).toEntity()
+            override suspend fun loadFromDb(): ImageModel {
+                return imageDao.getImage(id).toModel()
             }
 
-            override suspend fun createCall(): ImageData {
+            override suspend fun createCall(): ImageResponse {
                 return apiService.detail(id)
             }
 
-            override suspend fun saveCallResult(result: ImageData) {
-                imageDao.insert(result)
+            override suspend fun saveCallResult(result: ImageResponse) {
+                imageDao.insert(result.toEntity())
             }
 
         }.execute()

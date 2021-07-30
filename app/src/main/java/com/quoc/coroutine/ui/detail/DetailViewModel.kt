@@ -2,7 +2,7 @@ package com.quoc.coroutine.ui.detail
 
 import androidx.lifecycle.viewModelScope
 import com.quoc.coroutine.base.BaseViewModel
-import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.model.ImageModel
 import com.quoc.coroutine.domain.lib.Resource
 import com.quoc.coroutine.domain.usecase.GetImageDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +17,8 @@ class DetailViewModel @Inject constructor(
     private val getImageDetailUseCase: GetImageDetailUseCase,
 ) : BaseViewModel() {
 
-    private val _imageDetail = MutableStateFlow(ImageEntity.createEmpty())
-    val imageDetail: StateFlow<ImageEntity>
+    private val _imageDetail = MutableStateFlow(ImageModel.createEmpty())
+    val imageDetail: StateFlow<ImageModel>
         get() = _imageDetail
 
     fun getDetail(id: String) {

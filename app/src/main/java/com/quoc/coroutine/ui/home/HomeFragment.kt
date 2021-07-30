@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.quoc.coroutine.base.BaseFragment
 import com.quoc.coroutine.databinding.FragmentHomeBinding
 import com.quoc.coroutine.di.GlideApp
-import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.model.ImageModel
 import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.util.RecyclerScrollMoreListener
 import com.quoc.coroutine.util.autoCleared
@@ -63,7 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(),
         viewModel.isLoading bindTo ::loading
     }
 
-    private fun displayImages(images: List<ImageEntity>) {
+    private fun displayImages(images: List<ImageModel>) {
         imageAdapter.submitList(images)
     }
 
