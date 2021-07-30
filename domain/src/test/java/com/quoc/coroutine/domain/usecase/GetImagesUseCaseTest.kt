@@ -1,6 +1,7 @@
 package com.quoc.coroutine.domain.usecase
 
 import com.quoc.coroutine.domain.lib.Resource
+import com.quoc.coroutine.domain.model.ImageModel
 import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.domain.repository.ImageRepository
 import com.quoc.coroutine.domain.util.TestUtils
