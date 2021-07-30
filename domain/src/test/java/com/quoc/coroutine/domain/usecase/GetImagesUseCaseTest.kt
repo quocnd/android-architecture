@@ -1,7 +1,7 @@
 package com.quoc.coroutine.domain.usecase
 
 import com.quoc.coroutine.domain.lib.Resource
-import com.quoc.coroutine.domain.lib.data
+import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.domain.repository.ImageRepository
 import com.quoc.coroutine.domain.util.TestUtils
 import junit.framework.TestCase.assertEquals
@@ -18,7 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
-class GetImagesUseCaseTest: BaseUseCaseTest() {
+class GetImagesUseCaseTest : BaseUseCaseTest() {
     @Mock
     lateinit var repository: ImageRepository
     private lateinit var useCase: GetImagesUseCase
@@ -30,12 +30,13 @@ class GetImagesUseCaseTest: BaseUseCaseTest() {
 
     @Test
     fun getImageImages() = runBlockingTest {
+        val type = LoadType.REFRESH
         val images = TestUtils.getImages(3)
         val flow = flow {
             emit(Resource.Success(images))
         }
-        Mockito.`when`(repository.getImages()).thenReturn(flow)
-        val result = useCase.invoke(Any()).first()
+        Mockito.`when`(repository.getImages(type)).thenReturn(flow)
+        val result = useCase.invoke(type).first() as Resource.Success
         assertEquals(images, result.data)
     }
 }

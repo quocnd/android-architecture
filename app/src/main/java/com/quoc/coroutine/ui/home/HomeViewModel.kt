@@ -2,7 +2,7 @@ package com.quoc.coroutine.ui.home
 
 import androidx.lifecycle.viewModelScope
 import com.quoc.coroutine.base.BaseViewModel
-import com.quoc.coroutine.domain.entity.ImageEntity
+import com.quoc.coroutine.domain.model.ImageModel
 import com.quoc.coroutine.domain.lib.Resource
 import com.quoc.coroutine.domain.param.LoadType
 import com.quoc.coroutine.domain.usecase.GetImagesUseCase
@@ -16,8 +16,8 @@ class HomeViewModel @Inject constructor(
     private val getImagesUseCase: GetImagesUseCase
 ) : BaseViewModel() {
 
-    private val _images = MutableStateFlow<List<ImageEntity>>(emptyList())
-    val images: StateFlow<List<ImageEntity>> = _images
+    private val _images = MutableStateFlow<List<ImageModel>>(emptyList())
+    val images: StateFlow<List<ImageModel>> = _images
 
     fun getImages(type: LoadType) {
         viewModelScope.launch {

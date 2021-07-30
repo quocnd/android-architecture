@@ -1,8 +1,8 @@
-package com.quoc.coroutine.domain.entity
+package com.quoc.coroutine.domain.model
 
-import com.quoc.coroutine.data.data.ImageData
+import com.quoc.coroutine.data.db.entity.ImageEntity
 
-data class ImageEntity(
+data class ImageModel(
     val id: String,
     val author: String,
     val width: Int,
@@ -11,14 +11,14 @@ data class ImageEntity(
     val downloadUrl: String? = null
 ) {
     companion object {
-        fun createEmpty() = ImageEntity("", "", -1, -1, "", "")
+        fun createEmpty() = ImageModel("", "", -1, -1, "", "")
     }
 
     fun getThumbnailUrl(baseUrl: String) = "$baseUrl/id/$id/100/100.jpg"
 }
 
-fun ImageData.toEntity(): ImageEntity {
-    return ImageEntity(
+fun ImageEntity.toModel(): ImageModel {
+    return ImageModel(
         id, author, width, height, url, downloadUrl
     )
 }

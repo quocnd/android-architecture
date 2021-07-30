@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.quoc.coroutine.data.data.ImageData
+import com.quoc.coroutine.data.db.entity.ImageEntity
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -32,8 +32,8 @@ class ReadWriteDatabaseTest {
 
     @Test
     fun testReadWrite() = runBlocking {
-        val image1 = ImageData("1", "John", 1, 1, "url", "download_url")
-        val image2 = ImageData("2", "Peter", 2, 2, "url2", "download_url_2")
+        val image1 = ImageEntity("1", "John", 1, 1, "url", "download_url")
+        val image2 = ImageEntity("2", "Peter", 2, 2, "url2", "download_url_2")
         val inputList = listOf(image1, image2)
 
         imageDao.insertAll(inputList)
