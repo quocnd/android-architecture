@@ -43,6 +43,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    namespace 'com.quoc.coroutine'
 
 }
 
