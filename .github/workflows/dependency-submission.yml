@@ -24,3 +24,15 @@ jobs:
 
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@v3
+        with:
+          # Use a particular Gradle version instead of the configured wrapper.
+          # gradle-version: 8.6
+
+          # The gradle project is not in the root of the repository.
+          # build-root-directory: my-gradle-project
+
+          # Enable configuration-cache reuse for this build.
+          # cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+          # Do not attempt to submit the dependency-graph. Save it as a workflow artifact.
+          dependency-graph: generate-and-upload
