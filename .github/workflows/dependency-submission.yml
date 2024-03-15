@@ -33,7 +33,5 @@ jobs:
           build-scan-terms-of-service-agree: "yes"
         env:
           # Exclude all dependencies that originate solely in the 'buildSrc' project
-          DEPENDENCY_GRAPH_EXCLUDE_PROJECTS: ':domain'
-          # Exclude dependencies that are only resolved in test classpaths
-          DEPENDENCY_GRAPH_EXCLUDE_CONFIGURATIONS: '.*[Tt]est(Compile|Runtime)Classpath'
+          DEPENDENCY_GRAPH_EXCLUDE_PROJECTS: ':data'
 
