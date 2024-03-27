@@ -29,5 +29,5 @@ jobs:
         uses: gradle/actions/dependency-submission@v3
         env:
           # Exclude all dependencies that originate solely in the 'buildSrc' project
-          DEPENDENCY_GRAPH_EXCLUDE_PROJECTS: ':app:ForceDependencyResolutionPlugin_resolveProjectDependencies'
+          DEPENDENCY_GRAPH_EXCLUDE_PROJECTS: '::myapplication'
 
