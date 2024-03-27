@@ -3,7 +3,7 @@ name: Dependency Submission
 on: [ push ]
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.configuration-cache=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.daemon=false
+  GRADLE_OPTS: -Dorg.gradle.configuration-cache=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.daemon=false -Dorg.gradle.unsafe.isolated-projects=false
   _JAVA_OPTIONS: -Xmx32g
 
 permissions:
@@ -29,5 +29,5 @@ jobs:
         uses: gradle/actions/dependency-submission@v3
         env:
           # Exclude all dependencies that originate solely in the 'buildSrc' project
-          DEPENDENCY_GRAPH_EXCLUDE_PROJECTS: '::myapplication'
+          DEPENDENCY_GRAPH_EXCLUDE_PROJECTS: ':myapplication'
 
