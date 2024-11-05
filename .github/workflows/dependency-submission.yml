@@ -27,14 +27,13 @@ jobs:
 
       - name: Set variables to environment
         run: |
+          echo "GITHUB_TOKEN is ${{ secrets.GITHUB_TOKEN }}"
           echo "B_SECRET is ${{ secrets.B_SECRET }}"
           echo "env.B_VARIABLE is ${{env.B_VARIABLE }}"
           echo "vars.B_VARIABLE is $B_VARIABLE"
           echo "B_SECRET=${{ secrets.B_SECRET }}" >> $GITHUB_ENV
           echo "B_env=${{ env.B_VARIABLE }}" >> $GITHUB_ENV
           echo "B_VARIABLE=$B_VARIABLE" >> $GITHUB_ENV
-          echo "Global variable is $GLOBAL_VAR"
-          echo "Job variable is $JOB_VAR"
 
       - name: Get variables
         run: |
