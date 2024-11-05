@@ -36,6 +36,12 @@ jobs:
           echo "Global variable is $GLOBAL_VAR"
           echo "Job variable is $JOB_VAR"
 
+      - name: Get variables
+        run: |
+          echo "B_SECRET is $B_SECRET"
+          echo "env.B_VARIABLE is $B_env"
+          echo "vars.B_VARIABLE is $B_VARIABLE"
+
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@v3
         with:
