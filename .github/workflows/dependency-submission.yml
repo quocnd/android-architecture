@@ -27,7 +27,6 @@ jobs:
 
       - name: Set variables to environment
         run: |
-#          echo "export DEPENDENCY_SUBMISSION_STATUS=ENABLED" >> $GITHUB_ENV
           echo "B_SECRET is ${{ secrets.B_SECRET }}"
           echo "env.B_VARIABLE is ${{env.B_VARIABLE }}"
           echo "vars.B_VARIABLE is $B_VARIABLE"
