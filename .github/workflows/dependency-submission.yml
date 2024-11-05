@@ -25,6 +25,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Set variables to environment
+        run: |
+          echo "export DEPENDENCY_SUBMISSION_STATUS=ENABLED" >> $GITHUB_ENV
+          echo "B_SECRET=${{ secrets.B_SECRET }}"
+          echo "env.B_VARIABLE=${{env.B_VARIABLE }}"
+          echo "vars.B_VARIABLE=${{ vars.B_VARIABLE }}"
+          echo "export B_SECRET=${{ secrets.B_SECRET }}" >> $GITHUB_ENV
+          echo "export B_env=${{env.B_VARIABLE}}" >> $GITHUB_ENV
+          echo "export B_VARIABLE=${{vars.B_VARIABLE}}" >> $GITHUB_ENV
+
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@v3
         with:
