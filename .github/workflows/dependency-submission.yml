@@ -27,29 +27,27 @@ jobs:
 
       - name: Set variables to environment
         run: |
-          echo "secrets.R_SECRET is ${{ secrets.R_SECRET }}"
-          echo "R_SECRET is $R_SECRET"
-          echo "env.R_VARIABLE is ${{ env.R_VARIABLE }}"
-          echo "vars.B_VARIABLE is ${{ vars.R_VARIABLE }}"
-          echo "R_VARIABLE is $R_VARIABLE"
+          # echo "secrets.R_SECRET is ${{ secrets.R_SECRET }}"
+          # echo "R_SECRET is $R_SECRET"
+          # echo "env.R_VARIABLE is ${{ env.R_VARIABLE }}"
+          # echo "vars.B_VARIABLE is ${{ vars.R_VARIABLE }}"
+          # echo "R_VARIABLE is $R_VARIABLE"
           
-          echo "B_SECRET is ${{ secrets.B_SECRET }}"
-          echo "GITHUB_TOKEN is ${{ secrets.GITHUB_TOKEN }}"
-          echo "env.B_VARIABLE is ${{env.B_VARIABLE }}"
-          echo "vars.B_VARIABLE is $B_VARIABLE"
-          echo "B_SECRET=${{ secrets.B_SECRET }}" >> $GITHUB_ENV
-          echo "B_env=${{ env.B_VARIABLE }}" >> $GITHUB_ENV
-          echo "B_VARIABLE=$B_VARIABLE" >> $GITHUB_ENV
+          # echo "B_SECRET is ${{ secrets.B_SECRET }}"
+          # echo "GITHUB_TOKEN is ${{ secrets.GITHUB_TOKEN }}"
+          # echo "env.B_VARIABLE is ${{env.B_VARIABLE }}"
+          # echo "vars.B_VARIABLE is $B_VARIABLE"
+          # echo "B_SECRET=${{ secrets.B_SECRET }}" >> $GITHUB_ENV
+          # echo "B_env=${{ env.B_VARIABLE }}" >> $GITHUB_ENV
+          # echo "B_VARIABLE=$B_VARIABLE" >> $GITHUB_ENV
 
-          echo "R_SECRET=${{ secrets.R_SECRET }}" >> $GITHUB_ENV
-          echo "R_env=${{ env.R_VARIABLE }}" >> $GITHUB_ENV
-          echo "VR_VARIABLE=${{ vars.R_VARIABLE }}" >> $GITHUB_ENV
-          echo "R_VARIABLE=$R_VARIABLE" >> $GITHUB_ENV
+          echo "B_SECRET=${{ secrets.R_SECRET }}" >> $GITHUB_ENV
+          echo "B_VARIABLE=${{ vars.R_VARIABLE }}" >> $GITHUB_ENV
 
-          echo "export ER_SECRET=${{ secrets.R_SECRET }}" >> $GITHUB_ENV
-          echo "export ER_env=${{ env.R_VARIABLE }}" >> $GITHUB_ENV
-          echo "export EVR_VARIABLE=${{ vars.R_VARIABLE }}" >> $GITHUB_ENV
-          echo "export ER_VARIABLE=$R_VARIABLE" >> $GITHUB_ENV
+          # echo "export ER_SECRET=${{ secrets.R_SECRET }}" >> $GITHUB_ENV
+          # echo "export ER_env=${{ env.R_VARIABLE }}" >> $GITHUB_ENV
+          # echo "export EVR_VARIABLE=${{ vars.R_VARIABLE }}" >> $GITHUB_ENV
+          # echo "export ER_VARIABLE=$R_VARIABLE" >> $GITHUB_ENV
 
       - name: Get variables
         run: |
@@ -62,6 +60,9 @@ jobs:
           echo "Eenv.R_VARIABLE is $ER_env"
           echo "Evars.R_VARIABLE is $EVR_VARIABLE"
           echo "ER_VARIABLE is $ER_VARIABLE"
+
+      - name: Run test
+        run: ./gradlew testDebugUnitTest
 
       # - name: Generate and submit dependency graph
       #   uses: gradle/actions/dependency-submission@v3
