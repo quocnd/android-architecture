@@ -27,7 +27,8 @@ jobs:
 
       - name: Set variables to environment
         run: |
-          # echo "secrets.R_SECRET is ${{ secrets.R_SECRET }}"
+          echo "secrets.R_SECRET is ${{ secrets.R_SECRET }}"
+          echo "R_SECRET=${{ secrets.R_SECRET }}"
           # echo "R_SECRET is $R_SECRET"
           # echo "env.R_VARIABLE is ${{ env.R_VARIABLE }}"
           # echo "vars.B_VARIABLE is ${{ vars.R_VARIABLE }}"
