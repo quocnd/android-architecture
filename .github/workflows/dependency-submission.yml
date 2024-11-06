@@ -27,7 +27,12 @@ jobs:
 
       - name: Set variables to environment
         run: |
-          echo "R_SECRET is ${{ secrets.R_SECRET }}"
+          echo "secrets.R_SECRET is ${{ secrets.R_SECRET }}"
+          echo "R_SECRET is $R_SECRET"
+          echo "env.B_VARIABLE is ${{ env.R_VARIABLE }}"
+          echo "vars.B_VARIABLE is ${{ vars.B_VARIABLE }}"
+          echo "B_VARIABLE is $B_VARIABLE"
+          
           echo "B_SECRET is ${{ secrets.B_SECRET }}"
           echo "GITHUB_TOKEN is ${{ secrets.GITHUB_TOKEN }}"
           echo "env.B_VARIABLE is ${{env.B_VARIABLE }}"
@@ -42,8 +47,8 @@ jobs:
           echo "env.B_VARIABLE is $B_env"
           echo "vars.B_VARIABLE is $B_VARIABLE"
 
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@v3
-        with:
-          dependency-graph: generate-and-upload
+      # - name: Generate and submit dependency graph
+      #   uses: gradle/actions/dependency-submission@v3
+      #   with:
+      #     dependency-graph: generate-and-upload
 
