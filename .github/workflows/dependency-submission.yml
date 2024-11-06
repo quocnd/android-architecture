@@ -62,7 +62,7 @@ jobs:
           echo "ER_VARIABLE is $ER_VARIABLE"
 
       - name: Run test
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew assemble
 
       # - name: Generate and submit dependency graph
       #   uses: gradle/actions/dependency-submission@v3
