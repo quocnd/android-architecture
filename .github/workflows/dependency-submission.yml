@@ -27,6 +27,7 @@ jobs:
 
       - name: Set variables to environment
         run: |
+          echo "R_SECRET is ${{ secrets.R_SECRET }}"
           echo "B_SECRET is ${{ secrets.B_SECRET }}"
           echo "GITHUB_TOKEN is ${{ secrets.GITHUB_TOKEN }}"
           echo "env.B_VARIABLE is ${{env.B_VARIABLE }}"
