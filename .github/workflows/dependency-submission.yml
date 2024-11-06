@@ -3,7 +3,7 @@ name: Dependency Submission
 on: [ push ]
 
 env:
-  GRADLE_OPTS: -Dorg.gradle.configuration-cache=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.daemon=false -Dorg.gradle.unsafe.isolated-projects=true
+  GRADLE_OPTS: -Dorg.gradle.configuration-cache=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.daemon=false
   _JAVA_OPTIONS: -Xmx32g
 
 permissions:
