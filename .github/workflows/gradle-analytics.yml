@@ -1,0 +1,87 @@
+name: Gradle Analytics Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      # Choose requested task
+      requested_task:
+        type: choice
+        description: 'Requested Task'
+        options:
+          - ':app:bundleStagingDebug'
+          - ':app:bundleStagingRelease'
+        required: true
+        default: ':app:bundleStagingDebug'
+      # Choose duration
+      duration:
+        type: choice
+        description: 'Duration'
+        options:
+          - '7d'
+          - '1m'
+          - '6m'
+          - '1y'
+        required: true
+        default: '1y'
+
+env:
+  GRADLE_OPTS: -Dorg.gradle.configuration-cache=false -Dkotlin.compiler.execution.strategy=in-process -Dorg.gradle.daemon=false
+  _JAVA_OPTIONS: -Xmx40g
+
+jobs:
+  gradle-analytics:
+    runs-on: ubuntu-latest-16-cores
+    environment: staging
+    timeout-minutes: 60
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      # we need JDK 17 for running gradle commands
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup environment variables
+        run: |
+          JOB_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "JOB_URL=$JOB_URL" >> $GITHUB_ENV
+          echo "POSTGRESQL_DATABASE_HOST=${{ secrets.POSTGRESQL_DATABASE_HOST }}" >> $GITHUB_ENV
+          echo "POSTGRESQL_DATABASE_PORT=${{ secrets.POSTGRESQL_DATABASE_PORT }}" >> $GITHUB_ENV
+          echo "POSTGRESQL_DATABASE_NAME=${{ secrets.POSTGRESQL_DATABASE_NAME }}" >> $GITHUB_ENV
+          echo "POSTGRESQL_DATABASE_USER=${{ secrets.POSTGRESQL_DATABASE_USER }}" >> $GITHUB_ENV
+          echo "POSTGRESQL_DATABASE_PASSWORD=${{ secrets.POSTGRESQL_DATABASE_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Generate gradle analytics report
+        run:
+          ./gradlew reportAnalytics --task="${{ github.event.inputs.requested_task || ':app:bundleStagingDebug' }}" --branch="${{ github.head_ref || github.ref_name }}" --database="ci" --period="${{ github.event.inputs.duration || '1y' }}"
+
+      - name: Upload gradle analytics report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-analytics-report
+          path: build/gradle-analytics-plugin/
+
+      - name: Post failed message to android-main-app channel
+        if: ${{ failure() }} # if previous step is failed
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          channel-id: ${{ secrets.ANDROID_WALLET_APP_SLACK_CHANNEL }} # android-wallet channel
+          payload: |
+            {
+              "text": "gradle-analytics status: *${{ job.status }}*",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*@android-platform-team-devs*, gradle-analytics status: *${{ job.status }}*. \nPlease go to <${{ env.JOB_URL }}|build url> to check the details."
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.WALL_E_SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
